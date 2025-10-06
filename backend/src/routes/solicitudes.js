@@ -1,30 +1,31 @@
-import { Router } from "express";
-import { pool } from "../db.js";
+// backend/src/routes/solicitudes.js
+const express = require('express');
+const pool = require('../db');
 
-const router = Router();
+const router = express.Router();
 
-// Crear solicitud
-router.post("/", async (req, res) => {
-  const { nombre, grupo, motivo, fecha } = req.body;
+router.get('/', async (req, res) => {
+  try {
+    const [rows] = await pool.query('SELECT * FROM solicitudes ORDER BY fecha_solicitud DESC');
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Error al obtener solicitudes' });
+  }
+});
+
+router.post('/', async (req, res) => {
+  const { nombre, grupo, motivo, fecha_ausencia } = req.body;
   try {
     const [result] = await pool.query(
-      "INSERT INTO solicitudes (nombre, grupo, motivo, fecha) VALUES (?, ?, ?, ?)",
-      [nombre, grupo, motivo, fecha]
+      'INSERT INTO solicitudes (nombre, grupo, motivo, fecha_ausencia) VALUES (?, ?, ?, ?)',
+      [nombre, grupo, motivo, fecha_ausencia]
     );
-    res.json({ id: result.insertId, nombre, grupo, motivo, fecha });
-  } catch (error) {
-    res.status(500).json({ error: "Error al insertar solicitud" });
+    res.status(201).json({ id: result.insertId });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Error al insertar' });
   }
 });
 
-// Listar solicitudes
-router.get("/", async (req, res) => {
-  try {
-    const [rows] = await pool.query("SELECT * FROM solicitudes");
-    res.json(rows);
-  } catch (error) {
-    res.status(500).json({ error: "Error al obtener solicitudes" });
-  }
-});
-
-export default router;
+module.exports = router;
