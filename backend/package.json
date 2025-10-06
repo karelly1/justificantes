@@ -1,14 +1,12 @@
-
 {
   "name": "justificantes-backend",
   "version": "1.0.0",
   "description": "Backend para gestión de solicitudes de justificantes",
   "main": "src/server.js",
- "scripts": {
-  "start": "node src/server.js",
-  "test": "jest --runInBand"
-},
-
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "npx jest --runInBand"
+  },
   "keywords": [],
   "author": "Johana",
   "license": "ISC",
@@ -19,10 +17,9 @@
     "mysql2": "^3.9.0"
   },
   "devDependencies": {
-    "jest": "^29.7.0",
-    "supertest": "^6.3.4",
-    "nodemon": "^3.1.0"
-  },
+  "jest": "^29.7.0",
+  "supertest": "^7.0.0"
+},
   "jest": {
     "testEnvironment": "node",
     "roots": [
