@@ -75,7 +75,6 @@ jobs:
       - name: Ejecutar tests (usando npx)
         run: |
           cd backend
-          npx jest --runInBand
-         npm test
+          npx jest --runInBand
 
       
