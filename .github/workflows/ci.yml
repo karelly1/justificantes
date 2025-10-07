@@ -63,17 +63,19 @@ jobs:
 
       - name: Instalar dependencias del backend
         run: |
-         cd backend
-         npm ci
+          cd backend
+          npm ci
 
-      - name: Dar permisos de ejecución a Jest
+      - name: Verificar Jest instalado
         run: |
-         cd backend
-         chmod +x ./node_modules/.bin/jest || true
+          cd backend
+          ls -la ./node_modules/.bin/
+          npx jest --version
 
-      - name: Ejecutar tests
+      - name: Ejecutar tests (usando npx)
         run: |
-         cd backend
+          cd backend
+          npx jest --runInBand
          npm test
 
       
