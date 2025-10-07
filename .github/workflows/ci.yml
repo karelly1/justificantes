@@ -64,9 +64,15 @@ jobs:
       - name: Instalar dependencias del backend
         run: |
           cd backend
-          npm install
+          npm ci  # instala exactamente lo del package-lock.json
+
+      - name: Asegurar permisos de Jest
+        run: |
+          cd backend
+          chmod +x ./node_modules/.bin/jest || true
 
       - name: Ejecutar tests
         run: |
           cd backend
           npm test
+
