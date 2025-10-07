@@ -65,7 +65,8 @@ jobs:
       - name: Instalar dependencias del backend
         run: |
           cd backend
-          npm ci
+          npm install
+
 
       - name: Verificar Jest instalado
         run: |
