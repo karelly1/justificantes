@@ -1,14 +1,11 @@
-const mysql = require('mysql2/promise');
-
 const pool = mysql.createPool({
-  host: process.env.DB_HOST || 'localhost',        // localhost para dev local, "mysql" en Actions
+  host: process.env.DB_HOST || 'localhost',  // ahora será 127.0.0.1 en Actions
   user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || 'mysql123', // local dev
+  password: process.env.DB_PASSWORD || 'mysql123',
   database: process.env.DB_NAME || 'justificantes_db',
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
 });
 
-module.exports = pool;
 
