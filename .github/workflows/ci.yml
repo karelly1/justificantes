@@ -54,19 +54,18 @@ jobs:
             echo "Esperando..."
             sleep 5
           done
-
       - name: Crear tabla de pruebas
         run: |
-          mysql -h $DB_HOST -u$DB_USER -p$DB_PASSWORD -e "CREATE DATABASE IF NOT EXISTS $DB_NAME;"
-          mysql -h $DB_HOST -u$DB_USER -p$DB_PASSWORD $DB_NAME -e "
-            CREATE TABLE IF NOT EXISTS solicitudes (
-              id INT AUTO_INCREMENT PRIMARY KEY,
-              nombre VARCHAR(100),
-              grupo VARCHAR(50),
-              motivo TEXT,
-              fecha_ausencia DATE,
-              fecha_solicitud TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            );
+          mysql -h 127.0.0.1 -P 3306 -u$DB_USER -p$DB_PASSWORD -e "CREATE DATABASE IF NOT EXISTS $DB_NAME;"
+          mysql -h 127.0.0.1 -P 3306 -u$DB_USER -p$DB_PASSWORD $DB_NAME -e "
+          CREATE TABLE IF NOT EXISTS solicitudes (
+          id INT AUTO_INCREMENT PRIMARY KEY,
+          nombre VARCHAR(100),
+          grupo VARCHAR(50),
+          motivo TEXT,
+          fecha_ausencia DATE,
+          fecha_solicitud TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+          );
           "
 
       - name: Instalar dependencias del backend
