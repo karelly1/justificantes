@@ -20,7 +20,7 @@ jobs:
         ports:
           - 3306:3306
         options: >-
-          --health-cmd="mysqladmin ping -h localhost -p$MYSQL_ROOT_PASSWORD"
+          --health-cmd="mysqladmin ping -h localhost -proot"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
@@ -34,11 +34,14 @@ jobs:
         with:
           node-version: '18'
 
+      - name: Instalar cliente MySQL
+        run: sudo apt-get update && sudo apt-get install -y mysql-client
+
       - name: Esperar a que MySQL esté listo
         run: |
           echo "Esperando a que MySQL esté listo..."
           for i in {1..30}; do
-            if docker exec $(docker ps -qf "ancestor=mysql:8") mysqladmin ping -h localhost -proot --silent; then
+            if mysqladmin ping -h 127.0.0.1 -uroot -proot --silent; then
               echo "MySQL listo!"
               break
             fi
@@ -48,8 +51,6 @@ jobs:
 
       - name: Crear base de datos y tabla
         run: |
-          echo "Creando tabla de ejemplo..."
-          sudo apt-get install -y mysql-client
           mysql -h 127.0.0.1 -uroot -proot -e "CREATE DATABASE IF NOT EXISTS justificantes_db;"
           mysql -h 127.0.0.1 -uroot -proot justificantes_db -e "
             CREATE TABLE IF NOT EXISTS solicitudes (
@@ -67,17 +68,16 @@ jobs:
           cd backend
           npm install
 
+      - name: Dar permisos a Jest
+        run: chmod +x ./backend/node_modules/.bin/jest
 
       - name: Verificar Jest instalado
         run: |
           cd backend
-          ls -la ./node_modules/.bin/
           npx jest --version
+          ls -la ./node_modules/.bin/
 
-      - name: Ejecutar tests (usando npx)
+      - name: Ejecutar tests
         run: |
           cd backend
-          npx jest --runInBand
           npx jest --runInBand
-
-    
