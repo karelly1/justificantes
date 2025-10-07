@@ -1,7 +1,6 @@
-// backend/test/solicitudes.test.js
 const request = require('supertest');
 const express = require('express');
-const router = require('../src/routes/solicitudes'); // ruteador que ya tienes
+const router = require('../src/routes/solicitudes');
 const pool = require('../src/db');
 
 const app = express();
@@ -9,7 +8,7 @@ app.use(express.json());
 app.use('/solicitudes', router);
 
 beforeAll(async () => {
-  // crea tabla si no existe
+  // Crear tabla si no existe
   await pool.query(`
     CREATE TABLE IF NOT EXISTS solicitudes (
       id INT AUTO_INCREMENT PRIMARY KEY,
@@ -20,7 +19,8 @@ beforeAll(async () => {
       fecha_solicitud TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
   `);
-  // opcional: limpiar tabla para tests
+
+  // Limpiar tabla antes de tests
   await pool.query('DELETE FROM solicitudes');
 });
 
@@ -51,4 +51,3 @@ describe('API /solicitudes', () => {
     expect(Array.isArray(response.body)).toBe(true);
   });
 });
-
